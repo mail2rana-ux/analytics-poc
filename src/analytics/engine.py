@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 from sqlalchemy import func, desc
 from datetime import datetime, timedelta
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Union
 import pandas as pd
 import numpy as np
 import plotly.express as px
@@ -13,10 +13,15 @@ class AnalyticsEngine:
     def __init__(self, db: Session):
         self.db = db
         
-    def _create_multi_visualization(self, data: Dict[str, Any], query_type: str) -> Dict[str, Any]:
-        """Creates multiple visualizations for the same data"""
+    def _create_multi_visualization(self, data: Union[List[Dict[str, Any]], Dict[str, Any]], query_type: str) -> Dict[str, Any]:
+        """Creates multiple visualizations for the data
+        
+        Args:
+            data: Either a list of dictionaries or a single dictionary with the data
+            query_type: Type of visualization to create (enrollment or timeline)
+        """
         figs = {}
-        df = pd.DataFrame(data)
+        df = pd.DataFrame(data if isinstance(data, list) else [data])
         
         if query_type == "enrollment":
             # Primary visualization (bar chart)
@@ -113,11 +118,13 @@ class AnalyticsEngine:
         
         query = self.db.query(
             Organization.name,
-            func.date_trunc('month', Enrollment.enrollment_date).label('month'),
+            func.strftime('%Y-%m', Enrollment.enrollment_date).label('month'),
             func.count(Enrollment.id).label('enrollments')
-        ).join(User).join(Enrollment)\
+        ).select_from(Organization)\
+         .join(User, User.organization_id == Organization.id)\
+         .join(Enrollment, Enrollment.user_id == User.id)\
          .filter(Enrollment.enrollment_date >= six_months_ago)\
-         .group_by(Organization.name, 'month')
+         .group_by(Organization.name, func.strftime('%Y-%m', Enrollment.enrollment_date))
         
         if org_name:
             query = query.filter(Organization.name == org_name)
@@ -125,19 +132,20 @@ class AnalyticsEngine:
         results = query.all()
         
         # Convert to pandas for easier processing
-        df = pd.DataFrame([{
+        data = [{
             'organization': r[0],
             'month': r[1],
             'enrollments': r[2]
-        } for r in results])
+        } for r in results]
         
-        # Create line plot
-        fig = px.line(df, x='month', y='enrollments', color='organization',
-                     title='Monthly Enrollment Trends by Organization')
+        # Create visualizations using the helper method
+        visualizations = self._create_multi_visualization(data, "timeline")
         
+        # For trend queries, the line chart is the most appropriate visualization
         return {
-            'data': df.to_dict('records'),
-            'visualization': fig.to_json()
+            'data': data,
+            'visualization': visualizations.get('line'),
+            'visualizations': visualizations  # Keep all visualizations for potential future use
         }
 
     def get_completion_metrics(self) -> Dict[str, Any]:

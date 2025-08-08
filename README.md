@@ -98,3 +98,37 @@ For more details about the implementation and available features, see:
 - [Technical Documentation](docs/technical_documentation.md)
 - [Query Examples](docs/query_examples.md)
 - [API Reference](docs/api_reference.md)
+
+Removed the entry of mcp-python from requirements.txt. It was like this "git+https://github.com/modelcontextprotocol/mcp-python.git#egg=mcp-python".
+
+I replaced it with running this command in VSCode terminal: "pip install mcp-python"
+
+# How to run the server
+
+1. Create virtual environment:
+
+```
+python3 -m venv .venv
+source .venv/bin/activate
+```
+
+2. Used python3 and ugraded pip:
+
+```
+pip install --upgrade pip
+```
+
+3. Install dependencies:
+
+```
+pip install mcp-python
+pip install -r requirements.txt
+```
+
+4. Set up your .env file with your OpenAI API key and database URL
+
+5. Start the server:
+
+```
+python3 src/main.py
+```
