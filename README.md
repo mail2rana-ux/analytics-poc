@@ -1,3 +1,4 @@
+
 # Analytics LLM Server
 
 This is an LLM-powered analytics server that processes natural language queries about badge and course enrollment data. The server uses the Model Context Protocol (MCP) to provide structured analytics responses.
@@ -132,3 +133,7 @@ pip install -r requirements.txt
 ```
 python3 src/main.py
 ```
+=======
+# analytics-poc
+POC for Analytics
+>>>>>>> 146bde5213956c3bbd9c2d25554031dfaccd8839
