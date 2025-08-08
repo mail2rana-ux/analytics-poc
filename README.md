@@ -1,4 +1,3 @@
-
 # Analytics LLM Server
 
 This is an LLM-powered analytics server that processes natural language queries about badge and course enrollment data. The server uses the Model Context Protocol (MCP) to provide structured analytics responses.
@@ -37,19 +36,32 @@ Go to https://platform.openai.com/ and create an account there. This is needed f
 
 Go to https://platform.openai.com/api-keys and create an api key. Save it in a safe place and use it in .env file.
 
+# Removed the entry of mcp-python from requirements.txt.
+
+1. It was like this "git+https://github.com/modelcontextprotocol/mcp-python.git#egg=mcp-python".
+
+2. I replaced it with running this command in VSCode terminal: "pip install mcp-python"
+
+3. Used python3 and ugraded pip:
+
+```
+pip install --upgrade pip
+```
+
 ## Setup
 
 1. Create a virtual environment:
 
 ```bash
-python -m venv .venv
-source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+python3 -m venv .venv
+source .venv/bin/activate
+# On Windows: .venv\Scripts\activate
 ```
 
 2. Install dependencies:
 
 ```bash
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 ```
 
 3. Set up environment variables:
@@ -63,7 +75,7 @@ DATABASE_URL=postgresql://user:password@localhost:5432/dbname
 4. Run the server:
 
 ```bash
-python src/main.py
+python3 src/main.py
 ```
 
 ## Usage
@@ -100,40 +112,6 @@ For more details about the implementation and available features, see:
 - [Query Examples](docs/query_examples.md)
 - [API Reference](docs/api_reference.md)
 
-Removed the entry of mcp-python from requirements.txt. It was like this "git+https://github.com/modelcontextprotocol/mcp-python.git#egg=mcp-python".
-
-I replaced it with running this command in VSCode terminal: "pip install mcp-python"
-
-# How to run the server
-
-1. Create virtual environment:
-
-```
-python3 -m venv .venv
-source .venv/bin/activate
-```
-
-2. Used python3 and ugraded pip:
-
-```
-pip install --upgrade pip
-```
-
-3. Install dependencies:
-
-```
-pip install mcp-python
-pip install -r requirements.txt
-```
-
-4. Set up your .env file with your OpenAI API key and database URL
-
-5. Start the server:
-
-```
-python3 src/main.py
-```
-=======
 # analytics-poc
+
 POC for Analytics
->>>>>>> 146bde5213956c3bbd9c2d25554031dfaccd8839
