@@ -1,42 +1,5 @@
 Here's how this analytics engine works with LLM integration. Here's a Mermaid flowchart followed by a detailed explanation:
 
-```mermaid
-flowchart TD
-subgraph User_Interface
-A[User Query] --> B[FastAPI Endpoint]
-end
-
-    subgraph Analytics_Engine
-        B --> C{Pattern Matcher}
-        C -->|Badge Query| D[get_badge_enrollments]
-        C -->|Org Query| E[get_organization_trends]
-        C -->|Completion Query| F[get_completion_metrics]
-        C -->|Path Query| G[get_learning_paths]
-    end
-
-    subgraph Database_Layer
-        D --> H[(SQLite DB)]
-        E --> H
-        F --> H
-        G --> H
-    end
-
-    subgraph Visualization_Layer
-        D --> I[Bar/Radar/Funnel Charts]
-        E --> J[Line/Area/Box Charts]
-        F --> K[Heatmap/Sunburst/Matrix]
-        G --> L[Sankey/Network/Timeline]
-    end
-
-    subgraph LLM_Processing
-        I & J & K & L --> M[Data Context Creation]
-        M --> N[ChatOpenAI Processing]
-        N --> O[Natural Language Response]
-    end
-
-    O --> P[Final Response to User]
-```
-
 1. Query Processing:
 
 User submits a natural language query (e.g., "How many people are enrolled in Python Basics badge?")
