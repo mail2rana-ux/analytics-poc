@@ -1,5 +1,6 @@
 Here's how this analytics engine works with LLM integration. Here's a Mermaid flowchart followed by a detailed explanation:
 
+```mermaid
 flowchart TD
 subgraph User_Interface
 A[User Query] --> B[FastAPI Endpoint]
@@ -34,6 +35,7 @@ end
     end
 
     O --> P[Final Response to User]
+```
 
 1. Query Processing:
 
