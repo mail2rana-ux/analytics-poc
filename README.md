@@ -75,7 +75,7 @@ DATABASE_URL=postgresql://user:password@localhost:5432/dbname
 4. Run the server:
 
 ```bash
-python3 src/main.py
+PYTHONPATH=. python3 src/main.py
 ```
 
 ## Usage
@@ -111,7 +111,3 @@ For more details about the implementation and available features, see:
 - [Technical Documentation](docs/technical_documentation.md)
 - [Query Examples](docs/query_examples.md)
 - [API Reference](docs/api_reference.md)
-
-# analytics-poc
-
-POC for Analytics
